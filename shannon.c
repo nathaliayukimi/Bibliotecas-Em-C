@@ -4,6 +4,12 @@
 #include <math.h>
 #include "shannon.h"
 
+/*!
+* \brief Recebe uma string e a base do logaritmo para devolver um real que corresponde à Entropia de Shannon dessa string.
+* \param char * StringEntrada : Uma string de tamanho e conteúdo variável.
+* \param int Base : Um inteiro positivo que servirá como base do logaritmo para o cálculo da Entropia de Shannon da string.
+* \return long double Soma: Um long double que representa a Entropia de Shannon da string de parâmetro.
+*/
 long double ep3CalculaEntropiaShannon(char * StringEntrada, int Base){
 	// Declaração de variáveis
 	long double * Freq; // Vetor contador das frequências de cada caracter ASCII
@@ -28,5 +34,6 @@ long double ep3CalculaEntropiaShannon(char * StringEntrada, int Base){
 	if( Soma == 0.0){
 		return Soma;
 	}
-	return - Soma;
+	Soma = - Soma;
+	return Soma;
 }
