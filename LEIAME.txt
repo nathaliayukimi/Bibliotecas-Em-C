@@ -1,0 +1,124 @@
+AUTOR:
+	Nathália Yukimi Uchiyama Tsuno, 14600541, uchiyama@usp.br
+
+DESCRIÇÃO:
+	Implementação de Bibliotecas dinâmicas e estáticas em C.
+	
+	Sobre a Biblioteca Estática (libhashliza.a):
+		Executa 6 funções distintas, mas, complementares para a geração de um hash para 
+		determinada string, a partir de um vetor mágico.
+		
+		1. char * ep1Passo1Preenche(char * )
+			Recebe uma string e devolve uma nova string que contenha 16n caracteres.
+		
+		2. char * ep1Passo2XOR(char * , int * , int * )
+			Recebe uma string que tenha 16n caracteres, junto com um Vetor Mágico de 256
+			inteiros de 0 a 255 sem repetição e devolve uma nova string com 16(n + 1) caracteres.
+			Além disso, guarda-se o tamanho dessa string num ponteiro.
+			
+		3. char * ep1Passo3Comprime(char * , int , int * )
+			Recebe uma string que tenha 16(n + 1) caracteres, junto com um vetor Mágico 
+			de 256 inteiros de 0 a 255 sem repetição e o tamanho esperado para essa string e 
+			devolve uma nova string de exatamente 48 caracteres.
+			
+		4. char * ep1Passo4Hash(char * )
+			Recebe uma string de 48 caracteres e devolve uma nova string com os exatos primeiros 
+			16 caracteres da String de Entrada.
+			
+		5. char * ep1Passo4HashEmHexa(char *)
+			Recebe uma string de 16 caracteres e devolve uma string de 32 caracteres com a sua 
+			representação em hexadecimal.
+			
+		6. int * ep3CriaVetorMagico(int)
+			Recebe um inteiro e usa ele como semente para devolver um vetor pseudo-aleatório de 
+			256 inteiros de 0 a 255 sem repetição.
+			
+	Sobre a Biblioteca Dinâmica (libshannon.so):
+		Executa uma única função (long double ep3CalculaEntropiaShannon(char *, int)), que 
+		recebe uma string e a base do logaritmo para devolver um real que corresponde à Entropia 
+		de Shannon dessa string.	
+	
+COMO EXECUTAR:
+	A priori, é importante, ter em mãos um interpretador de Bash e um compilador de C. (As 
+	versões usadas estão indicadas abaixo).
+	Para compilar a biblioteca estática:
+		$ gcc -Wall -c -o hashliza.o hashliza.c (Da obtenção de objetos)
+		$ ar -rcv libhashliza.a hashliza.o (Da criação da biblioteca)
+		
+		Para verificar os objetos internos da biblioteca:
+		$ ar -t libhashliza.a
+		
+	Para compilar a biblioteca dinâmica:
+		$ gcc -c -fPIC -o shannon.o shannon.c -lcurl
+		$ gcc -o libshannon.so -shared shannon.o -lcurl
+		
+	Para compilação do seu executável:
+		$ gcc -Wall -c -o <arquivo>.o <arquivo>.c
+		$ export LD_LIBRARY_PATH=/path/to/libs:$LD_LIBRARY_PATH (Para indicar o caminho da biblioteca dinâmica)
+		$ gcc -Wall -o testa hashliza.o testa.o shannon.o -L${PWD} -lshannon -lm
+		
+	Para gerar a documentação:
+		Criação do Doxygen:
+		$ doxygen -g
+		
+		No programa gerado, Doxyfile, faça algumas modificações:
+		GENERATE_LATEX = NO
+		OUTPUT_LANGUAGE = Brazilian
+		OPTIMIZE_OUTPUT_FOR_C = YES
+		GENERATE_TREEVIEW = YES
+		INPUT = hashliza.h shannon.h
+		EXTRACT_ALL = YES
+		
+		Compile:
+		$ doxygen Doxyfile
+		
+		Verifique a documentação via arquivo "index.html", na pasta gerada.
+
+	Para executar o testa.c
+		Faça os passos acima e, por fim, execute o comando: ./testa
+	
+TESTES:
+	O arquivo testa.c foi implementado com o intuito de analisar o bom funcionamento de cada 
+	função anteriormente apresentadas.
+	Todos os testes utilizaram como base o VetorMágico "padrão" (para que o hash coincidisse com 
+	os valores apresentados no enunciado do ep1).
+	Ademais, a partir de cada saída das funções, foram testadas com strings "pré-definidas", com 
+	auxílio da função strcmp e de if's. Isto é, se a saída de strcmp for true, o comando do if é 
+	acionado, indicando que a função foi compilada corretamente. caso contrário, uma mensagem 
+	que afirma a não compilação é acionada.
+	
+	Teste 1:
+		Se baseia na string "Ola mundo!" (Sem acentuações e inicilizada com letra maiúscula).
+		É uma string pequena e simples. Então, trata-se de um caso básico.
+		
+	Teste 2:
+	 	Se baseia num trecho do romance de "Grande Sertão Veredas", de autoria de Guimarães 
+	 	Rosa. 
+	 	A string é "Bom, ia falando! questao, isso que me sovaca... Ah, formei aquela pergunta, 
+	 	para compadre meu Quelemem. Que me respondeu! que, por perto do Ceu, a gente se alimpou 
+	 	tanto, que todos os feios passados se exalaram de nao ser - feito sem-modez de tempo de 
+	 	crianca, mas-artes. Como a gente  nao carece de ter remorso do que divulgou no latejo de 
+	 	seus pesadelos de uma noite.".
+	 	É uma string maior e que poderia ocasionar alguns erros referentes a tamanhos nas 
+	 	funções.
+	 	
+	 Teste 3:
+	 	Trata-se de um teste referente ao funcionamento de um Vetor Mágico que tem como semente 
+	 	o valor "0216" (Código da matéria). Para esse teste, verificaou-se da igualdade entre 
+	 	cada posição do vetor de saída e de uma já pré-definida. Caso algum valor fosse 
+	 	diferente, uma pseudo variável booleana era acionada.
+	 	
+	 Teste 4:
+	 	Verifica a entropia de Shannon para a string "araraquara" (Tudo em Lower Case). A 
+	 	condição de verificação foi observar uma diferença absoluta entre a saída do programa e 
+	 	o valor pré-definido "1.685475" menor do que "0.000001" (a margem de erro).
+
+DEPENDÊNCIAS:
+	A máquina em que foi testado o programa teve como dependências:
+		
+		Processador: 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz
+		Memória Ram: 7844120 bytes
+		Sistema Operacional: Ubuntu 20.04.6 LTS
+		
+		Versão do Compilador C: 9.4.0
+		Versão do Bash: 5.0.17
