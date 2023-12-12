@@ -31,7 +31,8 @@ long double ep3CalculaEntropiaShannon(char * StringEntrada, int Base){
 			Soma = Soma + Prob * (log(Prob) / log(Base));
 		}
 	}
-	if( Soma == 0.0){
+
+	if( Soma == 0){
 		return Soma;
 	}
 	Soma = - Soma;

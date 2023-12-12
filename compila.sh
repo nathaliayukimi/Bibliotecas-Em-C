@@ -22,12 +22,11 @@ Verifica
 # Biblioteca Estática
 gcc -Wall -c -o testa.o testa.c
 Verifica
-export LD_LIBRARY_PATH=/path/to/libs:$LD_LIBRARY_PATH
-gcc -Wall -o testa hashliza.o testa.o shannon.o -L${PWD} -lshannon -lm
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PWD}
+gcc -Wall -o testa hashliza.o testa.o -L${PWD} -lshannon -lm
 Verifica
 
 # Criação do Doxygen
-doxygen -g
 doxygen Doxyfile
 
 # remoção de arquivos fúteis
